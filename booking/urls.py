@@ -5,7 +5,5 @@ router = DefaultRouter()
 router.register('list',BookingViewSet)
 urlpatterns = [
     path('',include(router.urls)),
-]
-urlpatterns = [
     path('<int:hotel_id>/',HotelBookingViewSet.as_view(),name="hotel_booking")
 ]
