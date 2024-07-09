@@ -38,6 +38,7 @@ def successBooking(request,new_hotel,guest,number_of_guests,room_type):
     return new_booking
 
 class HotelBookingViewSet(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self,request,*args,**kwargs):
         serializer = HotelBookingSerializer()
         fields = serializer.get_fields()

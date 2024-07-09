@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-vjgztf25yh8)v=)f0z+mcj285oytm*p=qkz$9_7ba9h3ji-2lm
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-# CSRF_TRUSTED_ORIGINS = ['https://*.mydomain.com','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://coastal-peace-hotel-booking.onrender.com','https://*.127.0.0.1']
 
 # Application definition
 
