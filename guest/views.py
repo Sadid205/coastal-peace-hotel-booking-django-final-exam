@@ -15,6 +15,7 @@ from django.contrib.auth import authenticate,login,logout
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
+from rest_framework.parsers import MultiPartParser
 # Create your views here.
 
 class GuestViewSet(viewsets.ModelViewSet):
@@ -23,8 +24,9 @@ class GuestViewSet(viewsets.ModelViewSet):
     serializer_class = GuestSerializer
 
 class RegistrationApiView(APIView):
+    parser_classes = [MultiPartParser]
     serializer_class = RegistrationSerializer
-    def post(self,request):
+    def post(self,request,format=None):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
