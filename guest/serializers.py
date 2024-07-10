@@ -16,7 +16,7 @@ class GuestSerializer(serializers.ModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(required=True)
 
-    image = serializers.ImageField(required=True)
+    image = serializers.ImageField(required=False)
     mobile_number = serializers.CharField(required=True)
 
     class Meta:
