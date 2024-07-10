@@ -83,7 +83,7 @@ class UserLogoutApiView(APIView):
     def get(self,request):
         request.user.auth_token.delete()
         logout(request)
-        return redirect('login')
+        return Response({"Success":"Logout Success"})
     
 class EditProfileViewSet(APIView):
     permission_classes = [IsAuthenticated]
