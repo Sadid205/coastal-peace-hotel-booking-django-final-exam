@@ -33,7 +33,7 @@ class RegistrationApiView(APIView):
             user = serializer.save()
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
-            confirmation_link = f"http://127.0.0.1:8000/guest/active/{uid}/{token}"
+            confirmation_link = f"https://coastal-peace-hotel-booking.onrender.com/guest/active/{uid}/{token}"
             email_subject = "Email Confirmation Link"
             email_body = render_to_string('email_confirmation.html',{'confirmation_link':confirmation_link,"user":user})
             email = EmailMultiAlternatives(email_subject,'',to=[user.email])
