@@ -30,8 +30,9 @@ SECRET_KEY = 'django-insecure-vjgztf25yh8)v=)f0z+mcj285oytm*p=qkz$9_7ba9h3ji-2lm
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['https://coastal-peace-hotel-booking.onrender.com','https://*.127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = ['https://coastal-peace-hotel-booking.onrender.com','https://*.127.0.0.1']
+CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,9 +50,11 @@ INSTALLED_APPS = [
     'hotel',
     'review',
     'transaction',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
