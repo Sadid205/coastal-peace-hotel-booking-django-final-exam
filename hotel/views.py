@@ -6,7 +6,7 @@ from .serializers import HotelImagesSerializers,HotelSerializers
 from rest_framework import permissions 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 # Create your views here.
 
 class HotelPagination(PageNumberPagination):
@@ -16,7 +16,7 @@ class HotelPagination(PageNumberPagination):
 
 
 class HotelViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser,FormParser]
     queryset = Hotel.objects.all()
@@ -25,7 +25,7 @@ class HotelViewSet(viewsets.ModelViewSet):
     pagination_class = HotelPagination
 
 class HotelImageViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = HotelImages.objects.all()
     serializer_class = HotelImagesSerializers

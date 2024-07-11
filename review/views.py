@@ -3,7 +3,7 @@ from .serializers import ReviewSerializer
 from rest_framework import viewsets
 from rest_framework import filters
 from rest_framework import permissions 
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 
@@ -25,7 +25,7 @@ class ReviewListForSpecificHotel(filters.BaseFilterBackend):
         return queryset
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated,ReviewerCanEditOtherWiseReadOnly]
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer

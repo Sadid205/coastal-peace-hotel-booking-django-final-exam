@@ -18,7 +18,7 @@ from rest_framework import generics
 from rest_framework.parsers import MultiPartParser
 from .serializers import UserSerializer
 from rest_framework import filters
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 
@@ -30,13 +30,13 @@ class GuestForSpecificUserAccount(filters.BaseFilterBackend):
         return queryset
 
 class UserViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class GuestViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
@@ -98,7 +98,7 @@ class UserLoginApiView(APIView):
         return Response(serializer.errors)
 
 class UserLogoutApiView(APIView):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def get(self,request):
         request.user.auth_token.delete()
@@ -123,7 +123,7 @@ class EditProfileViewSet(APIView):
     
 class PasswordChangeViewSet(generics.UpdateAPIView):
     queryset = User.objects.all()
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = ChangePasswordSerializer
     
