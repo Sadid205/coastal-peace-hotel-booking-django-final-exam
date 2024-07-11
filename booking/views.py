@@ -7,7 +7,7 @@ from hotel.models import Hotel
 from .models import Booking
 from transaction.models import Transaction
 from rest_framework.response import Response
-
+from rest_framework.authentication import TokenAuthentication
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
@@ -16,6 +16,7 @@ from django.template.loader import render_to_string
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+    authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
 def successBooking(request,new_hotel,guest,number_of_guests,room_type):
@@ -38,6 +39,7 @@ def successBooking(request,new_hotel,guest,number_of_guests,room_type):
     return new_booking
 
 class HotelBookingViewSet(APIView):
+    authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     def get(self,request,*args,**kwargs):
         serializer = HotelBookingSerializer()
