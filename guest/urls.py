@@ -3,6 +3,7 @@ from django.urls import path,include
 from . import views
 router  = DefaultRouter()
 router.register('list',views.GuestViewSet)
+router.register('user',views.UserViewSet)
 urlpatterns = [
     path('',include(router.urls)),
     path("register/",views.RegistrationApiView.as_view(),name="register"),
@@ -11,4 +12,5 @@ urlpatterns = [
     path("active/<uid64>/<token>/",views.activate,name="activate"),
     path("login/",views.UserLoginApiView.as_view(),name="login"),
     path("logout/",views.UserLogoutApiView.as_view(),name="logout"),
+    # path("user/",views.UserViewSet.as_view(),name="user"),
 ]

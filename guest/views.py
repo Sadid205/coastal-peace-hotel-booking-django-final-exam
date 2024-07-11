@@ -16,12 +16,27 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from rest_framework.parsers import MultiPartParser
+from .serializers import UserSerializer
+from rest_framework import filters
 # Create your views here.
+
+class GuestForSpecificUserAccount(filters.BaseFilterBackend):
+    def filter_queryset(self,request,queryset,view):
+        user_id = request.query_params.get("user_id")
+        if user_id:
+            return queryset.filter(user=user_id)
+        return queryset
+
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 class GuestViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+    filter_backends = [GuestForSpecificUserAccount]
 
 class RegistrationApiView(APIView):
     parser_classes = [MultiPartParser]

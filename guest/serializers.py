@@ -4,6 +4,10 @@ from account.models import Account
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','first_name','last_name','email']
 
 class GuestSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(many=False)
