@@ -9,14 +9,23 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from rest_framework import permissions
 from transaction.models import Transaction
+from rest_framework import filters
 # from rest_framework.authentication import TokenAuthentication
 # Create your views here.
+
+class GetAccountForSpecificUser(filters.BaseFilterBackend):
+    def filter_queryset(self,request,queryset,view):
+        user_id = request.query_params.get("user_id")
+        if user_id:
+            return queryset.filter(user=user_id)
+        return queryset
 
 class AccountViewSet(viewsets.ModelViewSet):
     permission_classes=[permissions.IsAuthenticated]
     # authentication_classes = [TokenAuthentication]
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+    filter_backends = [GetAccountForSpecificUser]
 
 
 
