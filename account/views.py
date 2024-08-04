@@ -42,8 +42,7 @@ class DepositViewSet(APIView):
         serializer = self.serializer_class(data=request.data,context={'request':request})
         if serializer.is_valid():
            user,amount =  serializer.save()
-           transaction_id = str(10000000000000+request.user.id)
-           new_transaction = Transaction.objects.create(guest=request.user.guest,transaction_id=transaction_id,transaction_types="Deposit")
+           new_transaction = Transaction.objects.create(guest=request.user.guest,transaction_types="Deposit")
            new_transaction.save()
            email_subject = "Deposit successfully"
            email_body = render_to_string("deposit_success_email.html",{"user":user,"amount":amount})

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Account(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    account_number = models.CharField(max_length=20)
+    account_number = models.CharField(max_length=20,null=True)
     balance = models.IntegerField(default=0,null=True)
 
     def __str__(self):

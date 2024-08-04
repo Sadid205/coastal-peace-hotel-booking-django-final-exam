@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'review',
     'transaction',
     'corsheaders',
+    'cloudinary_storage',
+    'cloudinary',
+    'django_filters',
 ]
 
 REST_FRAMEWORK = {
@@ -136,8 +139,19 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env("CLOUD_NAME"),
+    'API_KEY': env("API_KEY"),
+    'API_SECRET': env("API_SECRET"),
+}
+
+
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
