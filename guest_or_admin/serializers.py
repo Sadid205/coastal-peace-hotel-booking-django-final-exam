@@ -130,19 +130,3 @@ class GuestOrAdminSerializer(serializers.ModelSerializer):
         return obj.user.username
     def get_account_number(self,obj):
         return obj.account.account_number
-
-# class AdminListSerializer(serializers.ModelSerializer):
-#     user_email = serializers.SerializerMethodField()
-#     user_name = serializers.SerializerMethodField()
-#     account_number = serializers.SerializerMethodField()
-#     class Meta:
-#         model = GuestOrAdmin
-#         fields ="__all__"
-#     def get_user_email(self,obj):
-#         return obj.user.email
-#     def get_user_name(self,obj):
-#         return obj.user.username
-#     def get_account_number(self,obj):
-#         return obj.account.account_number
-    
-
