@@ -107,7 +107,6 @@ class UserLoginApiView(APIView):
         return Response(serializer.errors)
 
 class UserLogoutApiView(APIView):
-    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def get(self,request):
         request.user.auth_token.delete()
@@ -132,24 +131,26 @@ class EditProfileViewSet(APIView):
     
 class PasswordChangeViewSet(generics.UpdateAPIView):
     queryset = User.objects.all()
-    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = ChangePasswordSerializer
     
 
 class AdminRequestViewSet(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         guest_or_admin_object = GuestOrAdmin.objects.filter(admin_request=True)
         serializers = GuestOrAdminSerializer(guest_or_admin_object,many=True)
         return Response({"admin_request":serializers.data})
 
 class AdminListViewSet(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         admin_object = GuestOrAdmin.objects.filter(is_admin=True)
         serializers = GuestOrAdminSerializer(admin_object,many=True)
         return Response({"admin_list":serializers.data})
 
 class UserListViewSet(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         user_object = GuestOrAdmin.objects.filter(Q(is_admin=False),Q(is_master_admin=False))
         serializers = GuestOrAdminSerializer(user_object,many=True)

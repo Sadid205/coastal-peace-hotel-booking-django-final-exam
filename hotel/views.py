@@ -21,7 +21,7 @@ class HotelViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser,FormParser]
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializers
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     pagination_class = HotelPagination
     filter_backends = [DjangoFilterBackend,filters.SearchFilter]
     search_fields = ['name','address','location','facilities','details','booking_price','number_of_rooms','room_types','rules']
@@ -29,4 +29,4 @@ class HotelViewSet(viewsets.ModelViewSet):
 class HotelImageViewSet(viewsets.ModelViewSet):
     queryset = HotelImages.objects.all()
     serializer_class = HotelImagesSerializers
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]

@@ -22,7 +22,6 @@ class GetAccountForSpecificUser(filters.BaseFilterBackend):
 
 class AccountViewSet(viewsets.ModelViewSet):
     permission_classes=[permissions.IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     filter_backends = [GetAccountForSpecificUser]
@@ -31,7 +30,6 @@ class AccountViewSet(viewsets.ModelViewSet):
 
 class DepositViewSet(APIView):
     permission_classes=[permissions.IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
     serializer_class = DepositSerializer
     def get(self,request):
         serializer = self.serializer_class()

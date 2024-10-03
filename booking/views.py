@@ -113,6 +113,7 @@ class HotelBookingViewSet(APIView):
 
             
 class PendingBooking(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self,request,*args,**kwargs):
         pending_booking_list = Booking.objects.filter(booking_status="Pending")
         # pending_booking_list = []
@@ -124,6 +125,7 @@ class PendingBooking(APIView):
     
 
 class ConfirmBookingView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def patch(self,request,*args,**kwargs):
         booking_id = kwargs.get("booking_id")
         booking_object = Booking.objects.get(id=booking_id)
@@ -133,6 +135,7 @@ class ConfirmBookingView(APIView):
         return Response({"Success":"Successfully confirmed booking."})
     
 class CancelBookingView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def patch(self,request,*args,**kwargs):
         booking_id = kwargs.get("booking_id")
         booking_object = Booking.objects.get(id=booking_id)
@@ -143,6 +146,7 @@ class CancelBookingView(APIView):
     
 
 class BookingInfoView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self,request,*args,**kwargs):
         total_bookings = len(Booking.objects.filter(Q(booking_status="Pending")|Q(booking_status="Confirmed")|Q(booking_status="Checked-in")))
         total_user = len(GuestOrAdmin.objects.filter(is_admin=False))
