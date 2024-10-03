@@ -1,13 +1,13 @@
 from django.db import models
 from hotel.models import Hotel
-from guest.models import Guest
+from guest_or_admin.models import GuestOrAdmin
 from .constraints import BOOKING_STATUS
 import uuid
 # Create your models here.
 
 class Booking(models.Model):
     hotel = models.ForeignKey(Hotel,on_delete=models.CASCADE)
-    guest = models.ForeignKey(Guest,on_delete=models.CASCADE)
+    guest = models.ForeignKey(GuestOrAdmin,on_delete=models.CASCADE)
     booking_status = models.CharField(max_length=20,choices=BOOKING_STATUS,default="Pending")
     booking_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     check_in_date = models.DateTimeField(null=True,blank=True)

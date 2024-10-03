@@ -1,11 +1,11 @@
 from django.db import models
 from booking.models import Booking
-from guest.models import Guest
+from guest_or_admin.models import GuestOrAdmin
 from .constraints import TRANSACTION_STATUS,TRANSACTION_TYPES
 import uuid
 # Create your models here.
 class Transaction(models.Model):
-    guest = models.ForeignKey(Guest,on_delete=models.CASCADE,null=True)
+    guest = models.ForeignKey(GuestOrAdmin,on_delete=models.CASCADE,null=True)
     transaction_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     transaction_date = models.DateTimeField(auto_now_add=True)
     transaction_status = models.CharField(max_length=20,choices=TRANSACTION_STATUS,default="Success")

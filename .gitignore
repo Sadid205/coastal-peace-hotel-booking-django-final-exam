@@ -1,1 +1,3 @@
 coastal_peace_hotel_booking/.env
+db.sqlite3
+__pycache__/

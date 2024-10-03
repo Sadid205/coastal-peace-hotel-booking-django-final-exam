@@ -25,7 +25,7 @@ urlpatterns = [
     path("hotel/",include("hotel.urls")),
     path("accounts/",include("account.urls")),
     path("booking/",include("booking.urls")),
-    path("guest/",include("guest.urls")),
+    path("guest/",include("guest_or_admin.urls")),
     path("reviews/",include("review.urls")),
     path("transactions/",include("transaction.urls")),
     # path("register/",RegistrationApiView.as_view(),name="register"),

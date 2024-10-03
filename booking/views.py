@@ -1,4 +1,4 @@
-from .serializers import BookingSerializer,HotelBookingSerializer
+from .serializers import BookingSerializer,HotelBookingSerializer,PendingBookingSerializer,BookingInfoSerializer
 from .models import Booking
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -10,8 +10,17 @@ from rest_framework.response import Response
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from rest_framework import filters
+from django.db.models import Q
+from guest_or_admin.models import GuestOrAdmin
 import uuid
 # Create your views here.
+
+def sendEmail(user,email,email_subject,html_template,hotel):
+    email_subject = email_subject
+    email_body = render_to_string(html_template,{'user':user,'hotel':hotel})
+    email = EmailMultiAlternatives(email_subject,'',to=[email])
+    email.attach_alternative(email_body,"text/html")
+    email.send()
 
 class BookingForSpecificUser(filters.BaseFilterBackend):
     def filter_queryset(self,request,queryset,view):
@@ -42,11 +51,11 @@ def successBooking(request,new_hotel,guest,number_of_guests,room_type):
     new_booking.save()
     new_transaction = Transaction.objects.create(guest=guest,transaction_types="Booking",booking=new_booking)
     new_transaction.save()
-    email_subject = "Booking request success!"
-    email_body = render_to_string("booking_success_email.html",{'user':request.user,'hotel':new_hotel})
-    email = EmailMultiAlternatives(email_subject,'',to=[request.user.email])
-    email.attach_alternative(email_body,"text/html")
-    email.send()
+    sendEmail(user=request.user,email=request.user.email,email_subject="Booking request success!",html_template="booking_success_email.html",hotel=new_hotel)
+    admin_account_list = GuestOrAdmin.objects.filter(is_admin=True)
+    if len(admin_account_list)>0:
+        for admin_account in admin_account_list:
+            sendEmail(user=admin_account.user,email=admin_account.user.email,email_subject="Booking request",html_template="booking_request.html",hotel=new_hotel)
     return new_booking
 
 
@@ -103,3 +112,47 @@ class HotelBookingViewSet(APIView):
                     
 
             
+class PendingBooking(APIView):
+    def get(self,request,*args,**kwargs):
+        pending_booking_list = Booking.objects.filter(booking_status="Pending")
+        # pending_booking_list = []
+        # for pending_booking in booking_objects:
+        #     if pending_booking.booking_status=="Pending":
+        #         pending_booking_list.append(pending_booking)
+        serializer = PendingBookingSerializer(pending_booking_list,many=True)
+        return Response({"pending_booking_list":serializer.data})
+    
+
+class ConfirmBookingView(APIView):
+    def patch(self,request,*args,**kwargs):
+        booking_id = kwargs.get("booking_id")
+        booking_object = Booking.objects.get(id=booking_id)
+        booking_object.booking_status = "Confirmed"
+        booking_object.save()
+        sendEmail(user=request.user,email=request.user.email,email_subject="Booking request approved.",html_template="booking_confirmed.html",hotel=booking_object.hotel)
+        return Response({"Success":"Successfully confirmed booking."})
+    
+class CancelBookingView(APIView):
+    def patch(self,request,*args,**kwargs):
+        booking_id = kwargs.get("booking_id")
+        booking_object = Booking.objects.get(id=booking_id)
+        booking_object.booking_status = "Cancelled"
+        booking_object.save()
+        sendEmail(user=request.user,email=request.user.email,email_subject="Booking request rejected.",html_template="booking_canceled.html",hotel=booking_object.hotel)
+        return Response({"Success":"Successfully cancelled booking."})
+    
+
+class BookingInfoView(APIView):
+    def get(self,request,*args,**kwargs):
+        total_bookings = len(Booking.objects.filter(Q(booking_status="Pending")|Q(booking_status="Confirmed")|Q(booking_status="Checked-in")))
+        total_user = len(GuestOrAdmin.objects.filter(is_admin=False))
+        total_booking_request = len(Booking.objects.filter(booking_status="Pending"))
+        total_hotel = len(Hotel.objects.all())
+        booking_data = {
+            "total_bookings":total_bookings,
+            "total_user":total_user,
+            "total_booking_request":total_booking_request,
+            "total_hotel":total_hotel,
+        }
+        serializer = BookingInfoSerializer(booking_data)
+        return Response({"booking_info":serializer.data})

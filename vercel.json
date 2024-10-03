@@ -1,0 +1,13 @@
+{
+    "builds": [{
+        "src": "coastal_peace_hotel_booking/wsgi.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.11.3"}
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "coastal_peace_hotel_booking/wsgi.py"
+        }
+    ]
+}

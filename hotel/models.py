@@ -19,7 +19,7 @@ class Hotel(models.Model):
 
 class HotelImages(models.Model):
     hotel = models.ForeignKey(Hotel,on_delete=models.CASCADE,related_name="images")
-    image = models.ImageField(upload_to="hotel/images/")
+    image = models.URLField(max_length=2000)
     upload_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
