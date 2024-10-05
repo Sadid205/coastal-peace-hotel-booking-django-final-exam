@@ -4,10 +4,11 @@ from . import views
 router  = DefaultRouter()
 router.register('list',views.GuestViewSet)
 router.register('user',views.UserViewSet)
+router.register('edit_profile',views.EditProfileViewSet,basename='edit_profile')
 urlpatterns = [
     path('',include(router.urls)),
     path("register/",views.RegistrationApiView.as_view(),name="register"),
-    path("edit_profile/",views.EditProfileViewSet.as_view(),name="edit_profile"),
+    # path("edit_profile/",views.EditProfileViewSet.as_view(),name="edit_profile"),
     path("change_password/<int:pk>/",views.PasswordChangeViewSet.as_view(),name="change_password"),
     path("active/<uid64>/<token>/",views.activate,name="activate"),
     path("login/",views.UserLoginApiView.as_view(),name="login"),

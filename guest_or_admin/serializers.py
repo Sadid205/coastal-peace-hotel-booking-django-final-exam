@@ -74,25 +74,43 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(required=True)
 
 class EditProfileSerializer(serializers.ModelSerializer):
-    # image = serializers.ImageField(required=True)
-    # mobile_number = serializers.CharField(required=True)
-   #'image','mobile_number'
+    image = serializers.SerializerMethodField()
+    updated_image = serializers.ImageField(allow_empty_file=False,use_url=False,required=False)
     class Meta:
         model = User
-        fields = ['username','first_name','last_name','email']
+        fields = ['username','first_name','last_name','email','image','updated_image']
 
     def update(self,instance,validated_data):
-        instance.username = validated_data.get("username",instance.email)
+        # print(validated_data)
+        instance.username = validated_data.get("username",instance.username)
         instance.first_name = validated_data.get("first_name",instance.first_name)
         instance.last_name = validated_data.get("last_name",instance.last_name)
         instance.email = validated_data.get("email",instance.email)
         instance.save()
         
-        # guest_account = instance.guest
-        # guest_account.image = validated_data.get("image",guest_account.image)
-        # guest_account.mobile_number = validated_data.get("mobile_number",guest_account.mobile_number)
-        # guest_account.save()
+        if 'updated_image' in validated_data:
+            imgbb_api_key = settings.IMGBB_API_KEY
+            updated_image = validated_data.get('updated_image')
+            try:
+                response = requests.post(
+                    "https://api.imgbb.com/1/upload",
+                    params={"key":imgbb_api_key},
+                    files={"image":updated_image.read()},
+                )
+                response_data = response.json()
+                if response.status_code == 200 and response_data.get('success'):
+                    image_url = response_data["data"]["url"]
+                    instance.guest.image = image_url
+                    instance.guest.save()
+                else:
+                    error_message = response_data.get("error",{}).get("message","Image upload failed.")
+                    raise serializers.ValidationError(f"ImgBB Upload Error : error_message")
+            except Exception as e:
+                raise serializers.ValidationError(f"Image upload failed : {str(e)}")
+
         return instance
+    def get_image(self,obj):
+        return obj.guest.image
     
 class ChangePasswordSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(required=True,write_only=True)

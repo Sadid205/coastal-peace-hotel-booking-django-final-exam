@@ -113,21 +113,24 @@ class UserLogoutApiView(APIView):
         logout(request)
         return Response({"Success":"Logout Success"})
     
-class EditProfileViewSet(APIView):
-    permission_classes = [IsAuthenticated]
+class EditProfileViewSet(viewsets.ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
     serializer_class = EditProfileSerializer
-    def get(self,request):
-        user = request.user
-        serializer = self.serializer_class(instance=user)
-        return Response(serializer.data)
+    def get_object(self):
+        return self.request.user
+    # def get(self,request):
+    #     user = request.user
+    #     serializer = self.serializer_class(instance=user)
+    #     return Response(serializer.data)
 
-    def post(self,request):
-        user = request.user
-        serializer = self.serializer_class(instance=user,data=request.data,context={'request':request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+    # def post(self,request):
+    #     user = request.user
+    #     serializer = self.serializer_class(instance=user,data=request.data,context={'request':request})
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors)
     
 class PasswordChangeViewSet(generics.UpdateAPIView):
     queryset = User.objects.all()
