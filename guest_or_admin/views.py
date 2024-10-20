@@ -79,9 +79,9 @@ def activate(request,uid64,token):
     if user is not None and default_token_generator.check_token(user,token):
         user.is_active = True
         user.save()
-        return redirect("https://enchanting-nougat-9e6718.netlify.app/")
+        return redirect("https://cph-booking.netlify.app/")
     else:
-        return redirect("https://enchanting-nougat-9e6718.netlify.app/register")
+        return redirect("https://cph-booking.netlify.app/register")
     
 class UserLoginApiView(APIView):
     serializer_class = UserLoginSerializer
