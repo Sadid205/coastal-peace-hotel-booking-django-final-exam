@@ -28,6 +28,8 @@ urlpatterns = [
     path("guest/",include("guest_or_admin.urls")),
     path("reviews/",include("review.urls")),
     path("transactions/",include("transaction.urls")),
+    path("special_offer/",include("special_offer.urls")),
+    path("banner/",include("banner.urls")),
     # path("register/",RegistrationApiView.as_view(),name="register"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

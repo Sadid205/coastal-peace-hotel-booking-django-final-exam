@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Hotel,HotelImages
+from .models import Hotel,HotelImages,HotelsCategory
 # Register your models here.
 
 class MultipleImagesInline(admin.TabularInline):
@@ -11,3 +11,4 @@ class ChangeHotelAdmin(admin.ModelAdmin):
 
 admin.site.register(Hotel,ChangeHotelAdmin)
 admin.site.register(HotelImages)
+admin.site.register(HotelsCategory)

@@ -16,6 +16,4 @@ class DepositSerializer(serializers.Serializer):
         if amount<500:
             raise serializers.ValidationError({"Error":"Please deposit at least 500$."})
         user = self.context['request'].user
-        user.account.balance+=amount
-        user.account.save()
         return user,amount

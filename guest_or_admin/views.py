@@ -38,15 +38,13 @@ class UserForSpecificGuestAccount(filters.BaseFilterBackend):
         return queryset
 
 class UserViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [UserForSpecificGuestAccount]
 
 class GuestViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = GuestOrAdmin.objects.all()
     serializer_class = GuestSerializer
     filter_backends = [GuestForSpecificUserAccount]
@@ -114,23 +112,11 @@ class UserLogoutApiView(APIView):
         return Response({"Success":"Logout Success"})
     
 class EditProfileViewSet(viewsets.ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = EditProfileSerializer
     def get_object(self):
         return self.request.user
-    # def get(self,request):
-    #     user = request.user
-    #     serializer = self.serializer_class(instance=user)
-    #     return Response(serializer.data)
-
-    # def post(self,request):
-    #     user = request.user
-    #     serializer = self.serializer_class(instance=user,data=request.data,context={'request':request})
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors)
     
 class PasswordChangeViewSet(generics.UpdateAPIView):
     queryset = User.objects.all()

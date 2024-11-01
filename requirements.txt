@@ -3,6 +3,7 @@ certifi
 charset-normalizer
 dj-database-url
 Django
+django-background-tasks
 django-cors-headers
 django-environ
 django-filter
@@ -15,7 +16,9 @@ pipenv
 psycopg2-binary
 requests
 setuptools
+six
 sqlparse
+sslcommerz-lib
 tzdata
 urllib3
 virtualenv

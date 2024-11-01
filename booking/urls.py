@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import BookingViewSet,HotelBookingViewSet,PendingBooking,ConfirmBookingView,CancelBookingView,BookingInfoView
+from .views import BookingViewSet,HotelBookingViewSet,PendingBooking,ConfirmBookingView,CancelBookingView,BookingInfoView,GetDailyBookingCounts
 from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('list',BookingViewSet)
@@ -10,4 +10,5 @@ urlpatterns = [
     path('confirm_booking/<int:booking_id>/',ConfirmBookingView.as_view(),name="confirm_booking"),
     path('cancel_booking/<int:booking_id>/',CancelBookingView.as_view(),name="cancle_booking"),
     path('booking_info/',BookingInfoView.as_view(),name="booking_info"),
+    path('daily-bookings/',GetDailyBookingCounts,name="daily_bookings"),
 ]

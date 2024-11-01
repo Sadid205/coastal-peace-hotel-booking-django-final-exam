@@ -5,6 +5,7 @@ TRANSACTION_STATUS = {
 }
 TRANSACTION_TYPES = {
     ("Deposit","Deposit"),
-    ("Withdraw","Withdraw"),
+    ("Cancelled","Cancelled"),
+    ("Failed","Failed"),
     ("Booking","Booking"),
 }

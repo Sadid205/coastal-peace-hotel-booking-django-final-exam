@@ -12,7 +12,9 @@ from django.template.loader import render_to_string
 from rest_framework import filters
 from django.db.models import Q
 from guest_or_admin.models import GuestOrAdmin
-import uuid
+from django.utils import timezone
+from datetime import timedelta
+from rest_framework.decorators import api_view
 # Create your views here.
 
 def sendEmail(user,email,email_subject,html_template,hotel):
@@ -46,7 +48,10 @@ def successBooking(request,new_hotel,guest,number_of_guests,room_type):
     new_booking =  Booking.objects.create(hotel=new_hotel,guest=guest)
     new_booking.number_of_guests = number_of_guests
     new_booking.room_type = room_type
-    request.user.account.balance-=new_hotel.booking_price
+    if new_hotel.offer_price is not None:
+        request.user.account.balance-=new_hotel.offer_price
+    else:
+        request.user.account.balance-=new_hotel.booking_price
     request.user.account.save()
     new_booking.save()
     new_transaction = Transaction.objects.create(guest=guest,transaction_types="Booking",booking=new_booking)
@@ -116,10 +121,6 @@ class PendingBooking(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self,request,*args,**kwargs):
         pending_booking_list = Booking.objects.filter(booking_status="Pending")
-        # pending_booking_list = []
-        # for pending_booking in booking_objects:
-        #     if pending_booking.booking_status=="Pending":
-        #         pending_booking_list.append(pending_booking)
         serializer = PendingBookingSerializer(pending_booking_list,many=True)
         return Response({"pending_booking_list":serializer.data})
     
@@ -160,3 +161,26 @@ class BookingInfoView(APIView):
         }
         serializer = BookingInfoSerializer(booking_data)
         return Response({"booking_info":serializer.data})
+    
+
+@api_view(['GET'])
+def GetDailyBookingCounts(request):
+    now = timezone.now()
+    daily_counts = []
+    days_name = []
+
+    for i in range(7):
+        day_start = now - timedelta(days=i+1)
+        day_end = now - timedelta(days=i)
+
+        count = Booking.objects.filter(booking_date__gte=day_start,booking_date__lt=day_end).count()
+        daily_counts.append(count)
+
+        day_name = (now - timedelta(days=i)).strftime('%A')
+        days_name.append(day_name)
+
+    daily_counts.reverse()
+    days_name.reverse()
+
+    day_booking_data = list(zip(days_name,daily_counts))
+    return Response(day_booking_data)
