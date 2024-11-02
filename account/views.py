@@ -66,9 +66,9 @@ class DepositViewSet(APIView):
             post_body['total_amount'] = amount
             post_body['currency'] = "BDT"
             post_body['tran_id'] = self.unique_transaction_id()
-            post_body['success_url'] = f"http://127.0.0.1:8000/accounts/deposit/payment/{post_body['tran_id']}/{user.id}/{amount}/"
-            post_body['fail_url'] = f"http://127.0.0.1:8000/accounts/deposit/payment/{post_body['tran_id']}/{user.id}/{amount}/"
-            post_body['cancel_url'] = f"http://127.0.0.1:8000/accounts/deposit/payment/{post_body['tran_id']}/{user.id}/{amount}/"
+            post_body['success_url'] = f"https://cph-hotel-booking.vercel.app/accounts/deposit/payment/{post_body['tran_id']}/{user.id}/{amount}/"
+            post_body['fail_url'] = f"https://cph-hotel-booking.vercel.app/accounts/deposit/payment/{post_body['tran_id']}/{user.id}/{amount}/"
+            post_body['cancel_url'] = f"https://cph-hotel-booking.vercel.app/accounts/deposit/payment/{post_body['tran_id']}/{user.id}/{amount}/"
             post_body['emi_option'] = 0
             post_body['cus_name'] = f"{user.first_name} {user.last_name}"
             post_body['cus_email'] = f"{user.email}"
@@ -118,14 +118,14 @@ class PaymentSuccessOrFailViewSet(APIView):
                     email = EmailMultiAlternatives(email_subject,'',to=[user.email])
                     email.attach_alternative(email_body,"text/html")
                     email.send()
-                    redirect_url = f"http://localhost:5173/deposit?status=Deposit successfull.Please check your email.&is_success=true"
+                    redirect_url = f"https://cph-booking.netlify.app/deposit?status=Deposit successfull.Please check your email.&is_success=true"
                     return redirect(redirect_url)
                 else:
-                    redirect_url = f"http://localhost:5173/deposit?status=User doesn't exists.&is_success=false"
+                    redirect_url = f"https://cph-booking.netlify.app/deposit?status=User doesn't exists.&is_success=false"
                     return redirect(redirect_url)
             else:
-                redirect_url = f"http://localhost:5173/deposit?status=Payment varification failed!&is_success=false"
+                redirect_url = f"https://cph-booking.netlify.app/deposit?status=Payment varification failed!&is_success=false"
                 return redirect(redirect_url)
         else:
-            redirect_url = f"http://localhost:5173/deposit?status=Something went wrong!&is_success=false"
+            redirect_url = f"https://cph-booking.netlify.app/deposit?status=Something went wrong!&is_success=false"
             return redirect(redirect_url)
