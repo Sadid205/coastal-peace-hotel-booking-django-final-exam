@@ -17,3 +17,5 @@ class DepositSerializer(serializers.Serializer):
             raise serializers.ValidationError({"Error":"Please deposit at least 500$."})
         user = self.context['request'].user
         return user,amount
+    
+

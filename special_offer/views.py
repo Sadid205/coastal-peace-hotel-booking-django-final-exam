@@ -7,7 +7,7 @@ from rest_framework import permissions
 
 # Create your views here.
 class SpecialOfferView(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = SpecialOffer.objects.all()
     serializer_class = SpecialOfferSerializer
 

@@ -16,5 +16,5 @@ urlpatterns = [
     path("admin_request/",views.AdminRequestViewSet.as_view(),name="admin_request"),
     path("admin_list/",views.AdminListViewSet.as_view(),name="admin_list"),
     path("user_list/",views.UserListViewSet.as_view(),name="user_list"),
-    # path("user/",views.UserViewSet.as_view(),name="user"),
+    path("api/auth/google/login/",views.GoogleLogin.as_view(),name="google_login"),
 ]
